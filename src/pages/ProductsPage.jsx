@@ -16,21 +16,22 @@ const ProductsPage = () => {
     if (searchTerm) {
       if(filter){
         // data based on the search term and filter
-        fetchFromApi('http://localhost/website-backend/filter_products.php', 'POST', { search: searchTerm, filter: filter })
+        fetchFromApi('http://localhost:8000/api/product-filter', 'POST', { search: searchTerm, filter: filter })
           .then((data) => setProducts(data))
           .catch((error) => console.error('Error fetching data:', error));
       } else{
         // data based on the search term
-        fetchFromApi('http://localhost/website-backend/product_search.php', 'POST', { search: searchTerm })
+        fetchFromApi('http://localhost:8000/api/product-search', 'POST', { search: searchTerm })
           .then((data) => setProducts(data))
           .catch((error) => console.error('Error fetching data:', error));
       }
     } else {
         // default data
-        fetchFromApi('http://localhost/website-backend/show_products.php')
+        fetchFromApi('http://localhost:8000/api/products')
           .then((data) => setProducts(data))
           .catch((error) => console.error('Error fetching data:', error));
       }
+      console.log(products);
   }, [searchTerm, filter]);
 
   if(products.length === 0) return (

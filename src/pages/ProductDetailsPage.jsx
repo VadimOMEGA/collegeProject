@@ -64,9 +64,10 @@ const ProductDetailsPage = () => {
   
 
   useEffect(() => {
-    fetchFromApi('http://localhost/website-backend/product_info.php', 'POST', { product_id: id })
+    fetchFromApi(`http://127.0.0.1:8000/api/products/${id}`)
           .then((data) => setProductData(data))
           .catch((error) => console.error('Error fetching data:', error));
+          console.log(productData)
   }, [id])
 
   const handleClick = (colors) => {
@@ -76,14 +77,13 @@ const ProductDetailsPage = () => {
           .catch((error) => console.error('Error fetching data:', error));
   }
 
-  if(!productData) return '';
-
+  if(!productData) return "";
 
   return (
     <div className='section__padding mt-[80px] mb-[80px]'>
       <div className='mb-[3rem]'>
         <p>
-          <Link className='opacity-50' to='/'>Home /</Link><Link className='opacity-50' to='/Products'>Products /</Link> {productData[0].product_name} | {productData[0].memory}
+          <Link className='opacity-50' to='/'>Home /</Link><Link className='opacity-50' to='/Products'>Products /</Link> {productData.product_name} | {productData.memory}
         </p>
       </div>
 
@@ -96,32 +96,32 @@ const ProductDetailsPage = () => {
                 key={index} 
                 className='bg-secondary h-[100px] w-[100px] flex items-center justify-center rounded-[5px] cursor-pointer'
                 onClick={() => {setMainImage(index)}}>
-                <img className='h-[80%]' src={require(`../assets/${image}`)} alt="variant" />
+                <img className='h-[80%]' src={require(`../assets/${image.image_url}`)} alt="variant" />
               </div>
             ))
               }
             </div>
           <div className=' rounded-[5px] row-span-4 col-span-3 h-[500px] w-[500px] flex items-center justify-center bg-secondary'>
-            <img className='h-[80%]' src={require(`../assets/${productData.images[mainImage]}`)} alt="main" />
+            <img className='h-[80%]' src={require(`../assets/${productData.images[mainImage].image_url}`)} alt="main" />
           </div>
         </div>
 
         <div className='w-[400px]'>
-            <h1 className='font-bold text-[24px] mb-[1rem]'>{productData[0].product_name} | {productData[0].memory}</h1> 
+            <h1 className='font-bold text-[24px] mb-[1rem]'>{productData.product_name} | {productData.memory}</h1> 
               {
-                productData[0].in_stock == 1 ? <p className='text-greenButtonColor text-[14px] mb-[1rem]'>In Stock</p> : <p className='text-redButton text-[14px] mb-[1rem]'>Out of stock</p>
+                productData.in_stock == 1 ? <p className='text-greenButtonColor text-[14px] mb-[1rem]'>In Stock</p> : <p className='text-redButton text-[14px] mb-[1rem]'>Out of stock</p>
               }
-            <p className='text-[24px] mb-[1.5rem]'>{parseInt(productData[0].price).toLocaleString()} MDL</p>
-            <p className='text-[14px] mb-[1.5rem]'>{productData[0].product_description}</p>
+            <p className='text-[24px] mb-[1.5rem]'>{parseInt(productData.price).toLocaleString()} MDL</p>
+            <p className='text-[14px] mb-[1.5rem]'>{productData.product_description}</p>
             <div className='bg-black h-[1px] w-[100%] mb-[1.5rem]' />
-            <div className='text-[20px] flex items-center gap-[1.5rem] mb-[1.5rem]'><p>Color:</p> <SplitColors str={productData[0].colors} selectedColor={selectedColor} setSelectedColor={setSelectedColor} /></div>
+            <div className='text-[20px] flex items-center gap-[1.5rem] mb-[1.5rem]'><p>Color:</p> <SplitColors str={productData.colors} selectedColor={selectedColor} setSelectedColor={setSelectedColor} /></div>
             
             {
               isAuthenticated 
               ? (
               <button 
-                onClick={() => {if(productData[0].in_stock == 1) handleClick(productData[0].colors.split(','))}}
-                className={`mb-[50px] outline-none ${productData[0].in_stock == 1 ? ' bg-redButton hover:bg-redButtonHover ' : ' bg-redButtonHover line-through '} duration-[0.5s] w-[100%] h-[44px] rounded-[5px] text-white grid place-content-center`}>Add to cart
+                onClick={() => {if(productData.in_stock == 1) handleClick(productData.colors.split(','))}}
+                className={`mb-[50px] outline-none ${productData.in_stock == 1 ? ' bg-redButton hover:bg-redButtonHover ' : ' bg-redButtonHover line-through '} duration-[0.5s] w-[100%] h-[44px] rounded-[5px] text-white grid place-content-center`}>Add to cart
               </button>
               )
               : (

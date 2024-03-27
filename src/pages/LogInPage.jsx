@@ -31,7 +31,7 @@ const LogInPage = () => {
     e.preventDefault();
 
     try{
-      const data = await fetchFromApi('http://localhost/website-backend/login.php', 'POST', { email: formData.email, password: formData.password })
+      const data = await fetchFromApi('http://localhost:8000/api/login', 'POST', { email: formData.email, password: formData.password })
       if (data.token) {
         // Dispatch the login action to update the Redux store
         //console.log(data.token)
